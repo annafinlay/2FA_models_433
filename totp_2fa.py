@@ -4,13 +4,13 @@ import pyotp
 import qrcode
 from flask import Flask, request, session, redirect, url_for, send_file
 
-app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Secure session key
+app3 = Flask(__name__)
+app3.secret_key = os.urandom(24)  # Secure session key
 
 # Generate a new secret key for the TOTP 
 USER_SECRET = pyotp.random_base32()
 
-@app.route("/", methods=["GET", "POST"])
+@app3.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["username"]
@@ -29,7 +29,7 @@ def login():
     </form>
     '''
 
-@app.route("/setup")
+@app3.route("/setup")
 def show_qr():
     if "username" not in session:
         return redirect(url_for("login"))
@@ -48,7 +48,7 @@ def show_qr():
     <strong>{USER_SECRET}</strong>
     '''
 
-@app.route("/qr")
+@app3.route("/qr")
 def qr_code():
     if "username" not in session:
         return redirect(url_for("login"))
@@ -63,7 +63,7 @@ def qr_code():
     buf.seek(0)
     return send_file(buf, mimetype="image/png")
 
-@app.route("/verify", methods=["GET", "POST"])
+@app3.route("/verify", methods=["GET", "POST"])
 def verify_totp():
     if "username" not in session:
         return redirect(url_for("login"))
@@ -85,4 +85,4 @@ def verify_totp():
     '''
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app3.run(debug=True)
