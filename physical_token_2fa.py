@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import os
 
-app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Secure session key
+app1 = Flask(__name__)
+app1.secret_key = os.urandom(24)  # Secure session key
 
 # Simulated "hardware token"
 USER_PHYSICAL_KEY = "secure-physical-token"
 
-@app.route("/", methods=["GET", "POST"])
+@app1.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["username"]
@@ -26,7 +26,7 @@ def login():
     </form>
     '''
 
-@app.route("/use_key", methods=["GET", "POST"])
+@app1.route("/use_key", methods=["GET", "POST"])
 def use_physical_key():
     if "username" not in session:
         return redirect(url_for("login"))
@@ -48,4 +48,4 @@ def use_physical_key():
     '''
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app1.run(debug=True)

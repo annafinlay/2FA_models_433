@@ -2,8 +2,8 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import random
 import os
 
-app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Secure random key
+app2 = Flask(__name__)
+app2.secret_key = os.urandom(24)  # Secure random key
 
 # Simulated user credentials 
 USER_CREDENTIALS = {"user": "password123"}
@@ -12,7 +12,7 @@ USER_CREDENTIALS = {"user": "password123"}
 def generate_otp():
     return str(random.randint(100000, 999999))
 
-@app.route("/", methods=["GET", "POST"])
+@app2.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["username"]
@@ -31,7 +31,7 @@ def login():
 
     return render_template("login.html")
 
-@app.route("/verify", methods=["GET", "POST"])
+@app2.route("/verify", methods=["GET", "POST"])
 def verify_otp():
     if "username" not in session:
         return redirect(url_for("login"))
@@ -46,4 +46,4 @@ def verify_otp():
     return render_template("verify.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app2.run(debug=True)
