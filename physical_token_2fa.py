@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import os
+import time
 
 app1 = Flask(__name__)
 app1.secret_key = os.urandom(24)  # Secure session key
@@ -14,6 +15,7 @@ def login():
         password = request.form["password"]
         if username == "user" and password == "password123":
             session["username"] = username
+            session["auth_start_time"] = time.time()  # Start timing authentication
             return redirect(url_for("use_physical_key"))
         else:
             return "Invalid credentials"
@@ -34,7 +36,11 @@ def use_physical_key():
     if request.method == "POST":
         entered_key = request.form["physical_key"]
         if entered_key == USER_PHYSICAL_KEY:
-            return "Login Successful!"
+            if "auth_start_time" in session:
+                auth_time = time.time() - session.pop("auth_start_time")  # Calculate authentication time
+                return f"Login Successful! Authentication time: {auth_time:.4f} seconds"  # Display auth time
+            else:
+                return "Login Successful!"
         else:
             return "Invalid Key. Try again."
 
