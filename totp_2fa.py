@@ -13,6 +13,7 @@ USER_SECRET = pyotp.random_base32()
 
 @app3.route("/", methods=["GET", "POST"])
 def login():
+    increment_api_call_count()
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -35,6 +36,7 @@ def login():
 
 @app3.route("/setup")
 def show_qr():
+    increment_api_call_count()
     if "username" not in session:
         return redirect(url_for("login"))
     
@@ -47,6 +49,7 @@ def show_qr():
 
 @app3.route("/qr")
 def qr_code():
+    increment_api_call_count()
     if "username" not in session:
         return redirect(url_for("login"))
 
@@ -69,6 +72,7 @@ def qr_code():
 
 @app3.route("/verify", methods=["GET", "POST"])
 def verify_totp():
+    increment_api_call_count()
     if "username" not in session:
         return redirect(url_for("login"))
 
@@ -91,6 +95,10 @@ def verify_totp():
         <input type="submit" value="Verify">
     </form>
     '''
+    
+@app3.route("/api_count")
+def api_count():
+    return f"Total API Calls: {get_api_call_count()}"
 
 if __name__ == "__main__":
     app3.run(debug=True)

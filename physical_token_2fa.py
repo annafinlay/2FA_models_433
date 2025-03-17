@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import os
 import time
+from count import increment_api_call_count, get_api_call_count
 
 app1 = Flask(__name__)
 app1.secret_key = os.urandom(24)  # Secure session key
@@ -10,6 +11,7 @@ USER_PHYSICAL_KEY = "secure-physical-token"
 
 @app1.route("/", methods=["GET", "POST"])
 def login():
+    increment_api_call_count()
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -30,6 +32,7 @@ def login():
 
 @app1.route("/use_key", methods=["GET", "POST"])
 def use_physical_key():
+    increment_api_call_count()
     if "username" not in session:
         return redirect(url_for("login"))
 
@@ -52,6 +55,10 @@ def use_physical_key():
         <input type="submit" value="Use Security Key">
     </form>
     '''
+    
+@app1.route("/api_count")
+def api_count():
+    return f"Total API Calls: {get_api_call_count()}"
 
 if __name__ == "__main__":
     app1.run(debug=True)
