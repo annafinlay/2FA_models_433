@@ -1,0 +1,44 @@
+Cs 433 notes on the development process 
+Anna Finlay, Sam Ellis, Will Kelley
+
+
+=====================================
+Developer Notes
+=====================================
+
+January 21, 2025
+
+
+SMS-Based OTP notes
+The implementation of the SMS-Based OTP was straightforward and relatively quick. By leveraging existing libraries like twilio and other SMS gateways, we were able to handle the complexities of sending text messages with minimal custom code. The setup process was simple, and the only challenge was integrating the OTP verification properly to ensure smooth user experience. This method benefited from established solutions in the industry, which made development seamless.
+
+
+Physical Security Key notes
+The implementation of the physical security key model was by far the most intuitive of the three. Using Flask’s session management to simulate the “key” and having a simple button interface for authentication made the setup process remarkably easy. Additionally, there was no need to develop any low-level cryptographic components from scratch because there are mature solutions available for physical key validation. The development of this model felt like more of a plug-and-play integration, thanks to the solid foundation provided by industry-standard tools.
+
+
+=====================================
+
+February 9, 2025
+
+TOTP (QR Code)
+The TOTP (QR Code) implementation required slightly more effort due to the need to handle time-sensitive tokens. Using the pyotp library allowed us to easily generate and validate one-time passwords. The integration with QR codes was simple with the qrcode library, enabling users to scan a code with their authentication app. Although the TOTP model is well-documented, it still required some fine-tuning to ensure that the timing and token expiration worked flawlessly, but the presence of established libraries made it a manageable task.
+
+
+=====================================
+User Notes
+=====================================
+
+All collected March 3, 2025
+Collected from Harriet (Hattie) Sterns (Not a CS Major)
+
+
+
+SMS-Based OTP Feedback
+Harriet expressed that the SMS-Based OTP method felt familiar and easy to use. She appreciated the quickness of receiving a text message with the code and felt confident in entering it to authenticate. However, she did mention feeling slightly concerned about the security of the method. She was aware that text messages can sometimes be intercepted or hacked, which caused her some hesitation. She suggested that a brief explanation about why SMS-based authentication is still commonly used would help reassure users like her who are concerned about security vulnerabilities.
+
+TOTP (QR Code) Feedback
+Harriet found the TOTP (QR code) method a bit more complicated at first but quickly understood the process after scanning the QR code with her phone. She appreciated how the app generated codes automatically, but noted that the 30-second time window for the OTP sometimes made her feel rushed, especially if she didn’t have the app open right when needed. Overall, she felt it was secure, but she noted that a small tutorial or guide explaining the process would be useful for people who might not be as familiar with using authentication apps.
+
+Physical Security Key Feedback
+Harriet had a very positive experience with the Physical Security Key method. She found it straightforward and liked the simplicity of clicking a button to authenticate. She felt reassured by the physical aspect of it, as it seemed more tangible and secure compared to the other methods. However, she did wonder what would happen if she lost the physical key and whether there were backup options for situations like that. Despite this, she felt confident that it provided the most secure experience of the three methods, particularly after seeing the simplicity and reliability of the authentication process.
