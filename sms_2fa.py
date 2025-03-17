@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import random
 import os
 import time
+from count import increment_api_call_count, get_api_call_count
 
 app2 = Flask(__name__)
 app2.secret_key = os.urandom(24)  # Secure random key
@@ -15,6 +16,7 @@ def generate_otp():
 
 @app2.route("/", methods=["GET", "POST"])
 def login():
+    increment_api_call_count()
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -36,6 +38,7 @@ def login():
 
 @app2.route("/verify", methods=["GET", "POST"])
 def verify_otp():
+    increment_api_call_count()
     if "username" not in session:
         return redirect(url_for("login"))
 
@@ -51,6 +54,10 @@ def verify_otp():
             return "Invalid OTP. Try again."
 
     return render_template("verify.html")
+
+@app2.route("/api_count")
+def api_count():
+    return f"Total API Calls: {get_api_call_count()}"
 
 if __name__ == "__main__":
     app2.run(debug=True)
